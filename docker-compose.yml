@@ -1,0 +1,31 @@
+version: '3.0'
+services:
+  nginx:
+    image: nginx:stable-alpine3.17
+    ports:
+      - 8000:80
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./docker/nginx/logs/:/var/log/nginx/
+      - ./src:/var/www/plant-manager
+    depends_on:
+        - php-fpm
+    links:
+        - php-fpm
+    entrypoint: nginx -g 'daemon off;'
+    restart: always
+    networks:
+      - frontend
+      - backend
+  php-fpm:
+    networks:
+      - backend
+    image: php:8.1-fpm
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - ./src:/var/www/plant-manager
+networks:
+  frontend:
+  backend:
