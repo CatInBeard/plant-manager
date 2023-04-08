@@ -10,6 +10,7 @@ services:
       - ./src:/var/www/plant-manager
     depends_on:
         - php-fpm
+        - phpmyadmin
     links:
         - php-fpm
     entrypoint: nginx -g 'daemon off;'
@@ -26,6 +27,39 @@ services:
       - 9000:9000
     volumes:
       - ./src:/var/www/plant-manager
+  mysql:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    env_file:
+      - ./docker/mysql/.env
+    networks:
+      - backend
+    ports:
+      - "3306:3306"
+    entrypoint: mysqld
+  redis:
+    image: redis:alpine3.17
+    restart: always
+    volumes:
+    - ./docker/redis/data:/var/lib/redis
+    env_file:
+    - ./docker/redis/.env
+    networks:
+    - backend
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2-fpm-alpine
+    depends_on:
+        - mysql
+    restart: always
+    ports:
+      - 1500:80
+    environment:
+      - PMA_HOST=mysql
+    networks:
+      - backend
+      - frontend
 networks:
   frontend:
   backend:
