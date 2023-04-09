@@ -13,7 +13,11 @@ let PlantsFeed = ({plants = []}) => {
 
     let plantsElements = plants.map(
         (plant) => {
-
+            if(plant.id == 0){
+            return <div className="card my-3 p-3">
+                        Loading...
+                   </div>
+            }
             let watering_elemnt;
             if(plant.care.last_waterings.length < 1 || plant.care.last_waterings == undefined){
                 watering_elemnt = "";
