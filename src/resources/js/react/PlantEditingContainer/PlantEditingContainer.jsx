@@ -61,7 +61,7 @@ let PlantEditingContainer = () => {
 
         return <>
             <Header>
-                Edit {findedPlant.name} | <NavLink to={basepath}>Go back</NavLink>
+                <h1>Edit {findedPlant.name} | <NavLink to={basepath}>Go back</NavLink></h1>
             </Header>
             <Main>
                 <NotificationContainer type={state.editPlant.notificationType}>

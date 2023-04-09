@@ -20,6 +20,9 @@ let PlantsReducer = (state = PlantsState, action) => {
                 
             }
         break;
+        case "updatePlants":
+            state.plants = action.plants;
+        break;
     }
     return state;
 }
