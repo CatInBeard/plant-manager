@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import StoreContext from "../Store/StoreContext";
+import PlantsFeedContainer from "../PlantsFeedContainer/PlantsFeedContainer";
 
 let Index = () => {
 
@@ -14,7 +14,7 @@ let Index = () => {
             <h1>Plant manager</h1>
         </Header>
         <Main>
-                Plant managment app will be there!
+                <PlantsFeedContainer/>
         </Main>
     </div>)
 }
