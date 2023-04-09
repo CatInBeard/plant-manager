@@ -19,4 +19,4 @@ Homestead.json
 /.vagrant
 .phpunit.result.cache
 
-docker/*.log
+docker/*/logs
