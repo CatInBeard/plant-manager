@@ -1,8 +1,15 @@
 import s from "./PlantsFeed.module.css";
 import { NavLink } from "react-router-dom";
 import {plantEditingPath} from "../../Settings/Path";
+import NotificationContainer from "../../NotificationContainer/NotificationContainer";
 
-let PlantsFeed = ({plants}) => {
+let PlantsFeed = ({plants = []}) => {
+
+    if(plants < 1){
+        return <NotificationContainer type="info">
+                    You don't have any plants
+                </NotificationContainer>
+    }
 
     let plantsElements = plants.map(
         (plant) => {
