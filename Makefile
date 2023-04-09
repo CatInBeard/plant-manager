@@ -8,4 +8,6 @@ build:
 	docker-compose build
 stop:
 	docker-compose down
+install:
+	cd src && composer install && npm run build
 restart: build stop start-only

@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider,} from "react-router-dom";
 import Index from '../Index/Index'
 import NotFound from "../NotFound/NotFound"
 
-basepath = "/app"
+let basepath = "/app";
 
 let App = (props) => {
     const router = createBrowserRouter([

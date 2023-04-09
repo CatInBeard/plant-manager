@@ -12,6 +12,7 @@
             <h1 class="border-bottom text-center pb-1">
                 Main page
             </h1>
+            <a href="{{ route('app') }}">Go to the app</a>
         </div>
     </body>
 </html>
