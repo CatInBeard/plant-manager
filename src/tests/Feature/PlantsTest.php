@@ -24,4 +24,36 @@ class PlantsTest extends TestCase
         $response->assertValid();
         $response->assertValid(['status', 'data']);
     }
+
+    public function test_create_invalid_plant(): void
+    {
+        $response = $this->post('/api/plants');
+        $response->assertStatus(400);
+        $response->assertJson([
+            'status' => 'error',
+            'error' => [
+                'text' => 'Invalid params'
+            ]
+        ]);
+    }
+    public function test_create_plant(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "name",
+            "description" => "description",
+            "watering_per_week"=>1
+        ]);
+        $response->assertStatus(201);
+        $response->assertJson([
+            'status' => "created",
+            "data" => [
+                "plant" => [
+                    "name" => "name",
+                    "description" => "description",
+                    "watering_per_week"=>1
+                ]
+            ]
+        ]);
+    }
 }
