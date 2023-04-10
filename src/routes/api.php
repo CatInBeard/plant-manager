@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get("/plants", [PlantsController::class, 'get'])->name("plants");
+Route::post("/plants", [PlantsController::class, 'create'])->name("plants.create");

@@ -15,5 +15,10 @@ class Plant extends Model
         'watering_per_week'
     ];
 
+    protected $attributes = array(
+        'photo' => '',
+        'watering_per_week' => 0
+    );
+
     protected $table = 'plants';
 }
