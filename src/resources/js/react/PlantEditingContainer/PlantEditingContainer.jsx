@@ -7,7 +7,7 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import { basepath } from "../Settings/Path";
 import NotificationContainer from "../NotificationContainer/NotificationContainer"
-
+import updatePlant from "../API/updatePlant";
 
 let PlantEditingContainer = () => {
 
@@ -35,13 +35,36 @@ let PlantEditingContainer = () => {
 
     let submitForm = (e) =>{
         e.preventDefault()
-        let plant = {
-            id: state.editPlant.ID,
-            name: state.editPlant.name,
-            description: state.editPlant.description,
-            week_watering_times: state.editPlant.watering
-        };
-        store.dispatch({type: "EditPlant_Submit", plant:{...plant}});
+
+        let fn = async () => {
+
+            store.dispatch({type: "EditPlant_Notify", notificationText:"Updating...", notificationType:"info"});
+
+            try{
+                await updatePlant(state.editPlant.ID,
+                {
+                    name: state.editPlant.name,
+                    description: state.editPlant.description,
+                    watering_per_week: state.editPlant.watering
+                });
+            }
+            catch{
+                store.dispatch({type: "EditPlant_Notify", notificationText:"Sorry, something went wrong =(", notificationType:"danger"});
+                return;
+            }
+
+            let plant = {
+                id: state.editPlant.ID,
+                name: state.editPlant.name,
+                description: state.editPlant.description,
+                week_watering_times: state.editPlant.watering
+            };
+            store.dispatch({type: "EditPlant_Submit", plant:{...plant}});
+
+        }
+
+        fn();
+
     }
 
     const findedPlant = plants.find(
