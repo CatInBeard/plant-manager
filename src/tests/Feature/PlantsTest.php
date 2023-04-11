@@ -56,4 +56,58 @@ class PlantsTest extends TestCase
             ]
         ]);
     }
+
+    public function test_edit_plant(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "New Plant",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $plantID = $response->getData()->data->plant->id;
+
+        $response = $this->patch('/api/plants/'. $plantID , 
+        [
+            "name" => "Edited Plant",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $response->assertJson([
+            'status' => "updated",
+            "data" => [
+                "plant" => [
+                    "id" => $plantID,
+                    "name" => "Edited Plant",
+                    "description" => "description",
+                    "watering_per_week"=>2
+                ]
+            ]
+        ]);
+    }
+
+    public function test_edit_plant_not_found(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "New Plant",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $plantID = $response->getData()->data->plant->id;
+
+        $response = $this->patch('/api/plants/'. $plantID+100 , 
+        [
+            "name" => "Edited Plant",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(404);
+    }
 }
