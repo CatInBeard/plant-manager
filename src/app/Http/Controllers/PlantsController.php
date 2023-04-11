@@ -117,7 +117,67 @@ class PlantsController extends Controller
             ]
         ];
 
-        return response()->json($responce, 201);
+        return response()->json($responce, 200);
+    }
+
+    public function getOne(Request $request)
+    {
+
+        $plantID = $request->route('id');
+
+        $plant = Plant::find($plantID);
+
+        if($plant == null){
+            $responce = [
+                "status" => "error",
+                "error" => [
+                    "text" => "ID " . $plantID . " not found"
+                ]
+            ];
+
+            return response()->json($responce, 404);
+        }
+
+        $plant_array = $plant->toArray();
+        $plant_array['photo'] = $plant_array['photo'] == true ? $plant_array['photo'] : $this->NoImage;
+
+        $responce = [
+            "status" => "found",
+            "data" => [
+                "plant" => $plant_array
+            ]
+        ];
+
+        return response()->json($responce, 200);
+    }
+
+    public function deleteOne(Request $request)
+    {
+
+        $plantID = $request->route('id');
+
+        $plant = Plant::find($plantID);
+
+        if($plant == null){
+            $responce = [
+                "status" => "error",
+                "error" => [
+                    "text" => "ID " . $plantID . " not found"
+                ]
+            ];
+
+            return response()->json($responce, 404);
+        }
+
+        $plant->delete();
+
+        $responce = [
+            "status" => "deleted",
+            "data" => [
+            ]
+        ];
+
+        return response()->json($responce, 200);
     }
 
     protected function formatPlants($plants)
