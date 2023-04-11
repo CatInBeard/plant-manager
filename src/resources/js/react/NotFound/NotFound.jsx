@@ -2,6 +2,7 @@ import nf from './NotFound.module.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import { NavLink } from 'react-router-dom';
+import { basepath } from '../Settings/Path';
 
 let NotFound = () => {
   return (
@@ -11,7 +12,7 @@ let NotFound = () => {
       </Header>
       <Main>
         <h1 className={nf.error}>Error 404 not found</h1><br/>
-        <p>Go to <NavLink to="/">main page</NavLink></p>
+        <p>Go to <NavLink to={basepath}>main page</NavLink></p>
       </Main>
     </div>
   );

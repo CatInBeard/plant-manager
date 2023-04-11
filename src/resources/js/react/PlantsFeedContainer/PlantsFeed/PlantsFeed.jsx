@@ -2,6 +2,7 @@ import s from "./PlantsFeed.module.css";
 import { NavLink } from "react-router-dom";
 import {plantEditingPath} from "../../Settings/Path";
 import NotificationContainer from "../../NotificationContainer/NotificationContainer";
+import Loading from "../../Loading/Loading";
 
 let PlantsFeed = ({plants = []}) => {
 
@@ -14,9 +15,7 @@ let PlantsFeed = ({plants = []}) => {
     let plantsElements = plants.map(
         (plant) => {
             if(plant.id == 0){
-            return <div className="card my-3 p-3">
-                        Loading...
-                   </div>
+            return <Loading/>
             }
             let watering_elemnt;
             if(plant.care.last_waterings.length < 1 || plant.care.last_waterings == undefined){
@@ -53,7 +52,7 @@ let PlantsFeed = ({plants = []}) => {
                                 {watering_elemnt}
                                 <div className="p-2">
                                     <div className="btn btn-primary m-1">Mark watered</div> 
-                                    <NavLink to={plantEditingPath + + plant.id} className="btn btn-secondary  m-1">Edit</NavLink>
+                                    <NavLink to={plantEditingPath + + plant.id} className="btn btn-secondary  m-1">Edit plant</NavLink>
                                 </div>
                             </div>
                         </div>

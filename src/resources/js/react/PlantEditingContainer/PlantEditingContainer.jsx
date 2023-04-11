@@ -8,6 +8,8 @@ import Main from "../Main/Main";
 import { basepath } from "../Settings/Path";
 import NotificationContainer from "../NotificationContainer/NotificationContainer"
 import updatePlant from "../API/updatePlant";
+import getPlants from "../API/getPlants";
+import Loading from "../Loading/Loading";
 
 let PlantEditingContainer = () => {
 
@@ -65,6 +67,33 @@ let PlantEditingContainer = () => {
 
         fn();
 
+    }
+
+    const ZeroPlant = plants.find(
+        (element) => element.id == 0
+    );
+
+    if(ZeroPlant){
+        let fn = async () => {
+            try{
+                var result = await getPlants("Saint-Petersburg")
+            }
+            catch{
+                console.error("Can't access API")
+                return;
+            }
+
+            if(result.status == "ok"){
+                store.dispatch({type: "updatePlants", plants : [...result.data.plants] })
+            }
+            else{
+                console.error("API responce not ok")
+            }
+        }
+
+        fn();
+
+        return <Loading/>
     }
 
     const findedPlant = plants.find(
