@@ -75,7 +75,7 @@ class PlantsTest extends TestCase
             "description" => "description",
             "watering_per_week"=>2
         ]);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
 
         $response->assertJson([
             'status' => "updated",
@@ -108,6 +108,91 @@ class PlantsTest extends TestCase
             "description" => "description",
             "watering_per_week"=>2
         ]);
+        $response->assertStatus(404);
+    }
+
+    public function test_getOne_plant(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "PLANT",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $plantID = $response->getData()->data->plant->id;
+
+        $response = $this->get('/api/plants/'. $plantID);
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'status' => "found",
+            "data" => [
+                "plant" => [
+                    "id" => $plantID,
+                    "name" => "PLANT",
+                    "description" => "description",
+                    "watering_per_week"=>2
+                ]
+            ]
+        ]);
+    }
+
+    public function test_getOne_not_found_plant(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "PLANT",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $plantID = $response->getData()->data->plant->id;
+
+        $response = $this->get('/api/plants/'. $plantID+100);
+        $response->assertStatus(404);
+    }
+
+    public function test_delete_plant(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "This plant will be deleted",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $plantID = $response->getData()->data->plant->id;
+
+        $response = $this->delete('/api/plants/'. $plantID);
+        $response->assertStatus(200);
+
+        $response = $this->get('/api/plants/'. $plantID);
+        $response->assertStatus(404);
+    }
+
+    public function test_delete_not_found_plant(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "This plant will be deleted",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $plantID = $response->getData()->data->plant->id;
+
+        $response = $this->delete('/api/plants/'. $plantID);
+        $response->assertStatus(200);
+
+        $response = $this->get('/api/plants/'. $plantID);
+        $response->assertStatus(404);
+
+        $response = $this->delete('/api/plants/'. $plantID);
         $response->assertStatus(404);
     }
 }
