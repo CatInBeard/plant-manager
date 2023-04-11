@@ -4,11 +4,11 @@ import {plantEditingPath} from "../../Settings/Path";
 import NotificationContainer from "../../NotificationContainer/NotificationContainer";
 import Loading from "../../Loading/Loading";
 
-let PlantsFeed = ({plants = []}) => {
+let PlantsFeed = ({plants = [], wateringClick}) => {
 
     if(plants < 1){
         return <NotificationContainer type="info">
-                    You don't have any plants, <NavLink to={plantAddPath}>Add new</NavLink>
+                    You don't have any plants
                 </NotificationContainer>
     }
 
@@ -19,17 +19,36 @@ let PlantsFeed = ({plants = []}) => {
             }
             let watering_elemnt;
             if(plant.care.last_waterings.length < 1 || plant.care.last_waterings == undefined){
-                watering_elemnt = "";
+                watering_elemnt = <div className="alert alert-danger">
+                    Plant never watered!
+                </div>;
             }
             else{
+
                 plant.care.last_waterings.sort(
                     (a,b) => {
-                        return a.id < b.id
+                        return a.date < b.date
                     }
                 );
+
+                let date = new Date(plant.care.last_waterings[0].date)
+
+                let dateFormatted;
+
+                let todayStart = new Date();
+                todayStart.setHours(0,0);
+
+                if(date < todayStart){
+                    dateFormatted = date.toLocaleDateString()
+                }
+                else{
+                    dateFormatted = date.toLocaleTimeString()
+                }
+
+
                 watering_elemnt = 
-                    <div className="p-2">
-                        Last water: {plant.care.last_waterings[0].date}
+                    <div className="alert alert-info">
+                        Last water: {dateFormatted}
                     </div>;
             }
 
@@ -51,8 +70,8 @@ let PlantsFeed = ({plants = []}) => {
                                 </div>
                                 {watering_elemnt}
                                 <div className="p-2">
-                                    <div className="btn btn-primary m-1">Mark watered</div> 
-                                    <NavLink to={plantEditingPath + + plant.id} className="btn btn-secondary  m-1">Edit plant</NavLink>
+                                    <div className="btn btn-primary m-1" data-plant-id={plant.id} onClick={wateringClick}>Mark watered</div> 
+                                    <NavLink to={plantEditingPath + plant.id} className="btn btn-secondary  m-1">Edit plant</NavLink>
                                 </div>
                             </div>
                         </div>

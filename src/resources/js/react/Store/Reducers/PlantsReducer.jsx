@@ -23,6 +23,29 @@ let PlantsReducer = (state = PlantsState, action) => {
         case "updatePlants":
             state.plants = action.plants;
         break;
+        case "addWatering":
+            let Plant = state.plants.find(
+                (element) => {
+                    return element.id == action.plantID
+                }
+            );
+            if(Plant){
+
+                Plant.care.last_waterings.sort(
+                    (a,b) => {
+                        return a.id < b.id
+                    }
+                );
+
+                let wateringID = 1;
+
+                if(Plant.care.last_waterings[0]){
+                    wateringID = Plant.care.last_waterings[0].id;
+                }
+
+                Plant.care.last_waterings.push({id: 0, date: (new Date()).toISOString()})
+            }
+        break;
     }
     return state;
 }
