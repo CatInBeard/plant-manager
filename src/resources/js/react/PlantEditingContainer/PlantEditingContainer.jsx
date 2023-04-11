@@ -1,8 +1,8 @@
 import PlantEditing from "./PlantEditing/PlantEditing"
 import StoreContext from "../Store/StoreContext";
 import NotFound from "../NotFound/NotFound";
-import { useContext} from "react";
-import { NavLink, useParams } from 'react-router-dom';
+import { useContext, useEffect} from "react";
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import { basepath } from "../Settings/Path";
@@ -10,9 +10,12 @@ import NotificationContainer from "../NotificationContainer/NotificationContaine
 import updatePlant from "../API/updatePlant";
 import getPlants from "../API/getPlants";
 import Loading from "../Loading/Loading";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import APIDeletePlant from "../API/deletePlant"
+
 
 let PlantEditingContainer = () => {
-
+    
     let store = useContext(StoreContext)
     let state = store.getState();
 
@@ -68,6 +71,19 @@ let PlantEditingContainer = () => {
         fn();
 
     }
+    
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        if(state.editPlant.deleted){
+            return navigate("/app");
+        }
+    })
+
+    let deletePlant = (e) => {
+        e.preventDefault()
+        store.dispatch({type: "EditPlant_DisplayDeleteDialog"});
+    }
 
     const ZeroPlant = plants.find(
         (element) => element.id == 0
@@ -96,6 +112,35 @@ let PlantEditingContainer = () => {
         return <Loading/>
     }
 
+    let deleteDialog;
+
+    let cancelDeleteDialog = () => {
+        store.dispatch({type: "EditPlant_HideDeleteDialog"});
+    }
+
+    let confirmDeleteDialog = () => {
+        
+        let fn = async () => {
+            try{
+                await APIDeletePlant(state.editPlant.ID);
+            }
+            catch(e){
+                store.dispatch({type: "EditPlant_HideDeleteDialog"});
+                store.dispatch({type: "EditPlant_Notify", notificationText:"Sorry, something went wrong =(", notificationType:"danger"});
+                return;
+            }
+            store.dispatch({type: "EditPlant_PlantDeleted"});
+        }
+
+        fn();
+    }
+
+    if(state.editPlant.deleteDialog){
+        deleteDialog = <ConfirmDialog primaryAction={confirmDeleteDialog} cancelAction={cancelDeleteDialog} actionButtonText="delete" actionButtonType="danger" headerText="Confirm delition">
+            Are you sure to delete this plant. You can't undo this action
+        </ConfirmDialog>
+    }
+
     const findedPlant = plants.find(
         (element) => element.id == id
     );
@@ -116,6 +161,7 @@ let PlantEditingContainer = () => {
                 <h1>Edit {findedPlant.name} | <NavLink to={basepath}>Go back</NavLink></h1>
             </Header>
             <Main>
+                {deleteDialog}
                 <NotificationContainer type={state.editPlant.notificationType}>
                     {state.editPlant.notificationText}
                 </NotificationContainer>
@@ -125,6 +171,7 @@ let PlantEditingContainer = () => {
                 updateDescription={updateDescription}
                 updateWatering={updateWatering}
                 submitForm={submitForm}
+                deletePlant={deletePlant}
                 />
             </Main>
         </>

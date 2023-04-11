@@ -5,7 +5,8 @@ let PlantEditing = ({
                     updateName,
                     updateDescription,
                     updateWatering,
-                    submitForm}) => {
+                    submitForm,
+                    deletePlant}) => {
 
     return <div className="card my-3 p-3">
         <div className="row">
@@ -34,7 +35,7 @@ let PlantEditing = ({
                             <input className="form-control" id="week_watering_times" name="week_watering_times" type="number" min="0" value={plant.care.week_watering_times}/>
                         </div>
                         <div className="p-2 form-group">
-                            <input type="submit" className="btn btn-primary" value="save"/>
+                            <input type="submit" className="btn btn-primary" value="save"/> <button className="btn btn-danger" onClick={deletePlant}>delete</button>
                         </div>
                     </div>
                 </form>

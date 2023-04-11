@@ -10,6 +10,8 @@ let EditPlantReducer = (state = EditPlantState, action) => {
             state.description = action.plant.description;
             state.watering = action.plant.care.week_watering_times;
             state.notificationText = ""
+            state.deleteDialog = false;
+            state.deleted = false;
         break;
         case "EditPlant_updatePlantName":
             state.name = action.newValue;
@@ -28,6 +30,17 @@ let EditPlantReducer = (state = EditPlantState, action) => {
             state.notificationText = action.notificationText;
             state.notificationType = action.notificationType;
         break;
+        case "EditPlant_DisplayDeleteDialog":
+            state.deleteDialog = true;
+        break;
+        case "EditPlant_HideDeleteDialog":
+            state.deleteDialog = false;
+        break;
+        case "EditPlant_PlantDeleted":
+            state.deleteDialog = false;
+            state.deleted = true;
+        break;
+
     }
     return state;
 }

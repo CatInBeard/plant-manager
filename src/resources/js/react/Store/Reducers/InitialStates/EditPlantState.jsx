@@ -4,7 +4,9 @@ const EditPlantState = {
     description: "",
     watering: 0,
     notificationText: "",
-    notificationType: "success"
+    notificationType: "success",
+    deleteDialog: false,
+    deleted: false
 };
 
 export default EditPlantState
