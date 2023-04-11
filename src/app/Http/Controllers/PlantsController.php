@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Plant;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\Plant;
+use App\Models\Watering;
 
 class PlantsController extends Controller
 {
@@ -178,6 +178,39 @@ class PlantsController extends Controller
         ];
 
         return response()->json($responce, 200);
+    }
+
+    public function addWatering(Request $request){
+        $plantID = $request->route('id');
+
+        $plant = Plant::find($plantID);
+
+        if($plant == null){
+            $responce = [
+                "status" => "error",
+                "error" => [
+                    "text" => "ID " . $plantID . " not found"
+                ]
+            ];
+
+            return response()->json($responce, 404);
+        }
+
+        $watering = Watering::create(
+            [
+                "plant_id" => $plant->id
+            ]
+        );
+
+        $responce = [
+            "status" => "created",
+            "data" => [
+                "id" => $watering->id,
+                "created_at" => $watering->created_at
+            ]
+        ];
+
+        return response()->json($responce, 201);
     }
 
     protected function formatPlants($plants)

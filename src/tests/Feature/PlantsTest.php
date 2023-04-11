@@ -195,4 +195,23 @@ class PlantsTest extends TestCase
         $response = $this->delete('/api/plants/'. $plantID);
         $response->assertStatus(404);
     }
+    public function test_watering_plant(): void
+    {
+        $response = $this->post('/api/plants', 
+        [
+            "name" => "This plant will be deleted",
+            "description" => "description",
+            "watering_per_week"=>2
+        ]);
+        $response->assertStatus(201);
+
+        $plantID = $response->getData()->data->plant->id;
+
+        $response = $this->post('/api/plants/'. $plantID . "/watering");
+        $response->assertStatus(201);
+        $response->assertJson([
+            'status' => "created",
+            "data" => []
+        ]);
+    }
 }

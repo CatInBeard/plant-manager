@@ -25,3 +25,4 @@ Route::post("/plants", [PlantsController::class, 'create'])->name("plants.create
 Route::patch("/plants/{id}", [PlantsController::class, 'updateOne'])->name("plants.updateOne");
 Route::get("/plants/{id}", [PlantsController::class, 'getOne'])->name("plants.getOne");
 Route::delete("/plants/{id}", [PlantsController::class, 'deleteOne'])->name("plants.deleteOne");
+Route::post("/plants/{id}/watering", [PlantsController::class, 'addWatering'])->name("plants.addWatering");

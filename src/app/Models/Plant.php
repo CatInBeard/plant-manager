@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Watering;
 
 class Plant extends Model
 {
@@ -21,4 +22,8 @@ class Plant extends Model
     );
 
     protected $table = 'plants';
+
+    public function Waterings(){
+        return $this->hasMany(Watering::class);
+    }
 }
