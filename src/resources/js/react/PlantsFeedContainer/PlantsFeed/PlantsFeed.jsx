@@ -8,7 +8,7 @@ let PlantsFeed = ({plants = []}) => {
 
     if(plants < 1){
         return <NotificationContainer type="info">
-                    You don't have any plants
+                    You don't have any plants, <NavLink to={plantAddPath}>Add new</NavLink>
                 </NotificationContainer>
     }
 

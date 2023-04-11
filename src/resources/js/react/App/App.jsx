@@ -1,9 +1,10 @@
 import { createBrowserRouter, RouterProvider,} from "react-router-dom";
 import Index from '../Index/Index'
 import NotFound from "../NotFound/NotFound"
+import PlantAddContainer from "../PlantAddContainer/PlantAddContainer";
 import PlantEditingContainer from "../PlantEditingContainer/PlantEditingContainer"
 
-import {basepath, plantEditingPath} from '../Settings/Path';
+import {basepath, plantAddPath, plantEditingPath} from '../Settings/Path';
 
 let App = (props) => {
     const router = createBrowserRouter([
@@ -19,6 +20,13 @@ let App = (props) => {
         {
           path: plantEditingPath + ":id",
           element: <PlantEditingContainer />,
+          shouldRevalidate: ({ currentUrl }) => {
+            return true;
+          }
+        },
+        {
+          path: plantAddPath,
+          element: <PlantAddContainer />,
           shouldRevalidate: ({ currentUrl }) => {
             return true;
           }
