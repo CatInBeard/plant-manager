@@ -28,7 +28,8 @@ class PlantsController extends Controller
         return response()->json($responce, 200);
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
                 'name' => 'required|max:255',
@@ -60,6 +61,62 @@ class PlantsController extends Controller
                 "plant" => $plant_array
             ]
         ];
+        return response()->json($responce, 201);
+    }
+
+    public function updateOne(Request $request)
+    {
+
+        $plantID = $request->route('id');
+
+        $plant = Plant::find($plantID);
+
+        if($plant == null){
+            $responce = [
+                "status" => "error",
+                "error" => [
+                    "text" => "ID " . $plantID . " not found"
+                ]
+            ];
+
+            return response()->json($responce, 404);
+        }
+
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'max:255',
+            'description' => '',
+            'watering_per_week' => ''
+        ]);
+
+        if($validator->fails()){
+            $responce = [
+                "status" => "error",
+                "error" => [
+                    "text" => "Invalid params"
+                ]
+            ];
+            return response()->json($responce, 400);
+        }
+        
+        $validated = $validator->validated();
+
+
+        $plant->update($validated);
+
+
+
+        $plant_array = $plant->toArray();
+        $plant_array['photo'] = $plant_array['photo'] == true ? $plant_array['photo'] : $this->NoImage;
+
+
+        $responce = [
+            "status" => "updated",
+            "data" => [
+                "plant" => $plant_array
+            ]
+        ];
+
         return response()->json($responce, 201);
     }
 
