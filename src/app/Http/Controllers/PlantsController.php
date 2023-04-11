@@ -17,8 +17,7 @@ class PlantsController extends Controller
 
         $plants = Plant::all();
 
-        $formatted_plants = $this->formatPlants($plants->toArray());
-
+        $formatted_plants = $this->formatPlants($plants);
         $responce = [
             "status" => "ok",
             "data" => [
@@ -213,25 +212,44 @@ class PlantsController extends Controller
         return response()->json($responce, 201);
     }
 
+    protected function formatPlant($plant) {
+
+        $waterings = $plant->Waterings()->orderBy("created_at","DESC")->get();
+
+        return [
+            "id" => $plant->id,
+            "name" => $plant->name,
+            "description" => $plant->description,
+            "photo" => $plant->photo == true ? $plant->photo : $this->NoImage, // $plant->photo ?? $this->NoImage does not work (Why?)
+            "care" => [
+                "week_watering_times" => $plant->watering_per_week,
+                "last_waterings" => $this->formatWaterings($waterings)
+            ]
+        ];
+    }
+
     protected function formatPlants($plants)
     {
 
-
-        $format = function ($plant) {
-            return [
-                "id" => $plant['id'],
-                "name" => $plant['name'],
-                "description" => $plant['description'],
-                "photo" => $plant['photo'] == true ? $plant['photo'] : $this->NoImage, // $plant['photo'] ?? $this->NoImage does not work (Why?)
-                "care" => [
-                    "week_watering_times" => $plant['watering_per_week'],
-                    "last_waterings" => [
-
-                    ]
-                ]
-            ];
+        $format = function($plant){
+            return $this->formatPlant($plant);
         };
 
-        return array_map($format, $plants);
+        return $plants->map($format);
+    }
+
+    protected function formatWaterings($waterings){
+        $format = function($plant){
+            return $this->formatWatering($plant);
+        };
+
+        return $waterings->map($format);
+    }
+
+    protected function formatWatering($watering){
+        return [
+            "id" => $watering->id,
+            "date" => $watering->created_at,
+        ];
     }
 }
