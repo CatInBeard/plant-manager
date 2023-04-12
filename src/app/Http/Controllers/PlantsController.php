@@ -212,7 +212,56 @@ class PlantsController extends Controller
         return response()->json($responce, 201);
     }
 
-    protected function formatPlant($plant) {
+    public function addPhoto(Request $request)
+    {
+
+        $plantID = $request->route('id');
+
+        $plant = Plant::find($plantID);
+
+        if($plant == null){
+            $responce = [
+                "status" => "error",
+                "error" => [
+                    "text" => "ID " . $plantID . " not found"
+                ]
+            ];
+
+            return response()->json($responce, 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if($validator->fails()){
+            $responce = [
+                "status" => "error",
+                "error" => [
+                    "text" => "Invalid params"
+                ]
+            ];
+            return response()->json($responce, 400);
+        }
+        
+        $validated = $validator->validated();
+
+        if($file = $request->file('image')) {
+            $path = $request->file('image')->store('images');
+            $plant->update([ "photo" => $path ]);
+        }    
+
+        $responce = [
+            "status" => "created",
+            "data" => [
+                "plant" => $plant->toArray()
+            ]
+        ];
+        return response()->json($responce, 200);
+    }
+
+    protected function formatPlant($plant) 
+    {
 
         $waterings = $plant->Waterings()->orderBy("created_at","DESC")->get();
 
@@ -220,7 +269,7 @@ class PlantsController extends Controller
             "id" => $plant->id,
             "name" => $plant->name,
             "description" => $plant->description,
-            "photo" => $plant->photo == true ? $plant->photo : $this->NoImage, // $plant->photo ?? $this->NoImage does not work (Why?)
+            "photo" => $plant->photo == true ? asset('storage/'.$plant->photo) : $this->NoImage, // $plant->photo ?? $this->NoImage does not work (Why?)
             "care" => [
                 "week_watering_times" => $plant->watering_per_week,
                 "last_waterings" => $this->formatWaterings($waterings)
