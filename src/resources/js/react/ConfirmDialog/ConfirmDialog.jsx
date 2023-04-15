@@ -1,8 +1,7 @@
-import s from "./ConfirmDialog.module.css"
+import PopupContainer from "../PopupContainer/PopupContainer";
 
 let ConfirmDialog = ({children, actionButtonText="Ok", actionButtonType="primary",cancelAction,primaryAction, headerText="Confirm"}) => {
-    return <>
-        <div className={"position-fixed top-50 start-50 translate-middle p-3 " + s.front}>
+    return <PopupContainer>
             <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true">
                 <div className="toast-header">
                     <strong className="me-auto">{headerText}</strong>
@@ -24,11 +23,7 @@ let ConfirmDialog = ({children, actionButtonText="Ok", actionButtonType="primary
                     </div>
                 </div>
             </div>
-        </div>
-        <div className={"position-fixed top-0 start-0 " + s.Background}>
-        
-        </div>
-    </>;
+        </PopupContainer>;
 }
 
 export default ConfirmDialog;
