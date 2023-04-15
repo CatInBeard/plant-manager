@@ -243,13 +243,9 @@ class PlantsController extends Controller
             ];
             return response()->json($responce, 400);
         }
-        
-        $validated = $validator->validated();
 
-        if($file = $request->file('image')) {
-            $path = $request->file('image')->store('images');
-            $plant->update([ "photo" => $path ]);
-        }    
+        $path = $request->file('image')->store('public/images');
+        $plant->update([ "photo" => $file->hashName() ]);
 
         $responce = [
             "status" => "created",
@@ -269,7 +265,7 @@ class PlantsController extends Controller
             "id" => $plant->id,
             "name" => $plant->name,
             "description" => $plant->description,
-            "photo" => $plant->photo == true ? asset('storage/'.$plant->photo) : $this->NoImage, // $plant->photo ?? $this->NoImage does not work (Why?)
+            "photo" => $plant->photo == true ? asset("storage/images/".$plant->photo) : $this->NoImage, // $plant->photo ?? $this->NoImage does not work (Why?)
             "care" => [
                 "week_watering_times" => $plant->watering_per_week,
                 "last_waterings" => $this->formatWaterings($waterings)
