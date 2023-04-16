@@ -40,6 +40,12 @@ let EditPlantReducer = (state = EditPlantState, action) => {
             state.deleteDialog = false;
             state.deleted = true;
         break;
+        case "EditPlant_ShowNewPhotoDialog":
+            state.photoUpdater = 1;
+        break;
+        case "EditPlant_HideNewPhotoDialog":
+            state.photoUpdater = 0;
+        break;
 
     }
     return state;

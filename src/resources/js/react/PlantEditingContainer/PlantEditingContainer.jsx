@@ -12,10 +12,12 @@ import getPlants from "../API/getPlants";
 import Loading from "../Loading/Loading";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import APIDeletePlant from "../API/deletePlant"
+import PhotoUpdaterContainer from "../PhotoUpdaterContainer/PhotoUpdaterContainer";
+import updatePlantPhoto from "../API/updatePlantPhoto";
 
 
 let PlantEditingContainer = () => {
-    
+
     let store = useContext(StoreContext)
     let state = store.getState();
 
@@ -113,6 +115,7 @@ let PlantEditingContainer = () => {
     }
 
     let deleteDialog;
+    let photoUpdater;
 
     let cancelDeleteDialog = () => {
         store.dispatch({type: "EditPlant_HideDeleteDialog"});
@@ -135,10 +138,44 @@ let PlantEditingContainer = () => {
         fn();
     }
 
+    let clickUpdatePhoto = () => {
+        store.dispatch({type: "EditPlant_ShowNewPhotoDialog"});
+    }
+
+    let cancelUpdatePhoto = () => {
+        store.dispatch({type: "EditPlant_HideNewPhotoDialog"});
+    }
+
+    let confirmUpdatePhoto = () => {
+
+        let plantImage = document.getElementById("new_plant_image");
+        let fn = async () => {
+            let responce;
+            try{
+                responce = await updatePlantPhoto(state.editPlant.ID,plantImage.files[0]);
+            }
+            catch(e){
+                store.dispatch({type: "EditPlant_Notify", notificationText:"Sorry, something went wrong =(", notificationType:"danger"});
+            }
+
+            console.log(responce)
+
+            store.dispatch({type: "EditPlant_HideNewPhotoDialog"});
+            store.dispatch({type: "EditPlant_Submit", plant:{...responce.data.plant}});
+        }
+
+        fn();
+
+    }
+
     if(state.editPlant.deleteDialog){
         deleteDialog = <ConfirmDialog primaryAction={confirmDeleteDialog} cancelAction={cancelDeleteDialog} actionButtonText="delete" actionButtonType="danger" headerText="Confirm delition">
             Are you sure to delete this plant. You can't undo this action
         </ConfirmDialog>
+    }
+
+    if(state.editPlant.photoUpdater){
+        photoUpdater = <PhotoUpdaterContainer primaryAction={confirmUpdatePhoto} cancelAction={cancelUpdatePhoto}/>;
     }
 
     const findedPlant = plants.find(
@@ -162,6 +199,7 @@ let PlantEditingContainer = () => {
             </Header>
             <Main>
                 {deleteDialog}
+                {photoUpdater}
                 <NotificationContainer type={state.editPlant.notificationType}>
                     {state.editPlant.notificationText}
                 </NotificationContainer>
@@ -172,6 +210,7 @@ let PlantEditingContainer = () => {
                 updateWatering={updateWatering}
                 submitForm={submitForm}
                 deletePlant={deletePlant}
+                clickUpdatePhoto={clickUpdatePhoto}
                 />
             </Main>
         </>

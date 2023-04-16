@@ -6,12 +6,16 @@ let PlantEditing = ({
                     updateDescription,
                     updateWatering,
                     submitForm,
-                    deletePlant}) => {
+                    deletePlant,
+                    clickUpdatePhoto}) => {
 
     return <div className="card my-3 p-3">
         <div className="row">
             <div className="col">
-                <img className={s.main_image} src={plant.photo}></img>
+                <div className="d-flex flex-column">
+                    <img className={s.main_image} src={plant.photo}></img>
+                    <button onClick={clickUpdatePhoto} className="btn btn-secondary mt-3">Update photo</button>
+                </div>
             </div>
             <div className="col">
                 <form onSubmit={submitForm}>

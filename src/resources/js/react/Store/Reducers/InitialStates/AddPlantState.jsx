@@ -3,7 +3,8 @@ const AddPlantState = {
     description: "",
     watering: 0,
     notificationText: "",
-    notificationType: "success"
+    notificationType: "success",
+    redirectID: 0
 };
 
 export default AddPlantState

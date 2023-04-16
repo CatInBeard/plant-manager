@@ -16,12 +16,26 @@ let PlantsReducer = (state = PlantsState, action) => {
             if(findedPlant){
                 findedPlant.name = plant.name;
                 findedPlant.description = plant.description;
+                if(plant.photo){
+                    findedPlant.photo = plant.photo;
+                }
                 findedPlant.care.week_watering_times = plant.watering;
                 
             }
         break;
         case "updatePlants":
             state.plants = action.plants;
+        break;
+        case "updatePlant":
+            let existPlant = state.plants.find(
+                (element) => {
+                    
+                    return element.id == action.plant.id
+                }
+            );
+            if(existPlant){
+                existPlant = action.plant;
+            }
         break;
         case "addWatering":
             let Plant = state.plants.find(
@@ -46,7 +60,29 @@ let PlantsReducer = (state = PlantsState, action) => {
                 Plant.care.last_waterings.push({id: 0, date: (new Date()).toISOString()})
             }
         break;
+        case "AddPlant_Submit": 
+
+            let findPlant = state.plants.find(
+                (element) => {           
+                    return element.id == action.plant.id
+                }
+            );
+            
+            if(!findPlant){
+                state.plants.push({
+                    id: action.plant.id,
+                    name: action.plant.name,
+                    description: action.plant.description,
+                    photo: action.plant.photo,
+                    care: {
+                        week_watering_times: action.plant.care.week_watering_times,
+                        last_waterings: []
+                    },
+                })
+            }
+        break;
     }
+
     return state;
 }
 

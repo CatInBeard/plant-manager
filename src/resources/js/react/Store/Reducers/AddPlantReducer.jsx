@@ -14,15 +14,19 @@ let AddPlantReducer = (state = AddPlantState, action) => {
             state.watering = action.newValue;
         break;
         case "AddPlant_Submit":
-            state.notificationText = "Plant succesfully added!"
-            state.notificationType = "success"
+            state.notificationText = ""
+            state.notificationType = ""
             state.name = "";
             state.description = "";
             state.watering = 0;
+            state.redirectID = action.plant.id;
         break;
         case "AddPlant_Notify":
             state.notificationText = action.notificationText;
             state.notificationType = action.notificationType;
+        break;
+        case "AddPlant_setRedirect":
+            state.redirectID = action.newID;
         break;
     }
     return state;

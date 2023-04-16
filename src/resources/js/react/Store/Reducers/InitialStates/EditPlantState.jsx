@@ -6,7 +6,8 @@ const EditPlantState = {
     notificationText: "",
     notificationType: "success",
     deleteDialog: false,
-    deleted: false
+    deleted: false,
+    photoUpdater: 0
 };
 
 export default EditPlantState
