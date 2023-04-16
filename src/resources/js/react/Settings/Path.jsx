@@ -1,9 +1,11 @@
 let basepath = "/app";
 
-let plantEditingPath = basepath + "/plant/"
+let plantEditingPath = [basepath + "/plant/" , "/edit" ];
 
-let plantAddPath = basepath + "/add"
+let plantViewPath = basepath + "/plant/";
+
+let plantAddPath = basepath + "/add";
 
 let apiBasepath = "/api/";
 
-export {basepath,plantEditingPath,apiBasepath,plantAddPath};
+export {basepath,plantEditingPath,apiBasepath,plantAddPath,plantViewPath};

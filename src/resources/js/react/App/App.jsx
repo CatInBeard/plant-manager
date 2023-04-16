@@ -3,8 +3,9 @@ import Index from '../Index/Index'
 import NotFound from "../NotFound/NotFound"
 import PlantAddContainer from "../PlantAddContainer/PlantAddContainer";
 import PlantEditingContainer from "../PlantEditingContainer/PlantEditingContainer"
+import PlantViewContainer from "../PlantViewContainer/PlantViewContainer";
 
-import {basepath, plantAddPath, plantEditingPath} from '../Settings/Path';
+import {basepath, plantAddPath, plantEditingPath, plantViewPath} from '../Settings/Path';
 
 let App = (props) => {
     const router = createBrowserRouter([
@@ -18,7 +19,7 @@ let App = (props) => {
           }
         },
         {
-          path: plantEditingPath + ":id",
+          path: plantEditingPath[0] + ":id" + plantEditingPath[1],
           element: <PlantEditingContainer />,
           shouldRevalidate: ({ currentUrl }) => {
             return true;
@@ -27,6 +28,13 @@ let App = (props) => {
         {
           path: plantAddPath,
           element: <PlantAddContainer />,
+          shouldRevalidate: ({ currentUrl }) => {
+            return true;
+          }
+        },
+        {
+          path: plantViewPath + ":id",
+          element: <PlantViewContainer />,
           shouldRevalidate: ({ currentUrl }) => {
             return true;
           }
