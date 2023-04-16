@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="description" content="Plant manager helps you keep track of your plants watering">
         <title>Plant-manager</title>
         @vite('resources/sass/app.scss')
     </head>
