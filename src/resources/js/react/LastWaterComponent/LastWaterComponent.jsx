@@ -1,19 +1,19 @@
 
-let LastWateringComponent = ({watering}) => {
-    if(watering.length < 1 || watering == undefined){
+let LastWateringComponent = ({waterings}) => {
+    if(waterings.length < 1 || waterings == undefined){
         return <div className="alert alert-danger">
             Plant never watered!
         </div>;
     }
     else{
 
-        watering.sort(
+        waterings.sort(
             (a,b) => {
                 return a.date < b.date
             }
         );
 
-        let date = new Date(watering[0].date)
+        let date = new Date(waterings[0].date)
 
         let dateFormatted;
 

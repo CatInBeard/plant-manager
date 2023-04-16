@@ -36,7 +36,7 @@ let PlantsFeed = ({plants = [], wateringClick}) => {
                                 <div className="p-2">
                                     Water {plant.care.week_watering_times} times a week
                                 </div>
-                                <LastWateringComponent watering={plant.care.last_waterings} />
+                                <LastWateringComponent waterings={plant.care.last_waterings} />
                                 <div className="p-2">
                                     <div className="btn btn-primary m-1" data-plant-id={plant.id} onClick={wateringClick}>Mark watered</div> 
                                     <NavLink to={plantEditingPath[0] + plant.id + plantEditingPath[1]} className="btn btn-secondary  m-1">Edit plant</NavLink>
