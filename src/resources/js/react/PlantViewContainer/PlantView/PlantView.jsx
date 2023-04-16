@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { plantEditingPath } from "../../Settings/Path";
 import s from "./PlantView.module.css"
 import LastWateringComponent from "../../LastWaterComponent/LastWaterComponent";
+import ViewLastWateringsComponent from "../../ViewLastWateringsComponent/ViewLastWateringsComponent";
 
 let PlantView = ({
     plant,
@@ -30,12 +31,16 @@ return <div className="card my-3 p-3">
                             Waterings per week: {plant.care.week_watering_times}
                     </div>
                     <div>
-                        <LastWateringComponent watering={plant.care.last_waterings} />
+                        <LastWateringComponent waterings={plant.care.last_waterings} />
                     </div>
                     <div className="p-2">
                         <div className="btn btn-primary m-1" data-plant-id={plant.id} onClick={wateringClick}>Mark watered</div> 
                         <NavLink to={plantEditingPath[0] + plant.id + plantEditingPath[1]} className="btn btn-secondary m-1">Edit</NavLink>
                         {plant.care.last}
+                    </div>
+                    <div>
+                        <h3>Last waterings:</h3>
+                        <ViewLastWateringsComponent waterings={plant.care.last_waterings}/>
                     </div>
                 </div>
             </div>
