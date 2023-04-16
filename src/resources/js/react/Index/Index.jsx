@@ -22,7 +22,9 @@ let Index = () => {
                     <h1>Plant manager</h1>
                     </div>
                     <div className="col justify-content-end d-flex">
-                        <NavLink className="btn btn-lg btn-success mb-2" to={plantAddPath}>Add new</NavLink>
+                        <div>
+                            <NavLink className="btn btn-lg btn-success mb-2" to={plantAddPath}>Add new</NavLink>
+                        </div>
                     </div>
                 </div>
             </div>
