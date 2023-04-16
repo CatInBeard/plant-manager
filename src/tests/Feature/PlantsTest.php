@@ -32,7 +32,7 @@ class PlantsTest extends TestCase
         $response->assertJson([
             'status' => 'error',
             'error' => [
-                'text' => 'Invalid params'
+                'validation' => []
             ]
         ]);
     }

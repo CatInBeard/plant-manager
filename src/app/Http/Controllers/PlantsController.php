@@ -40,7 +40,7 @@ class PlantsController extends Controller
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "Invalid params"
+                    "validation" => $validator->errors()
                 ]
             ];
             return response()->json($responce, 400);
@@ -88,7 +88,7 @@ class PlantsController extends Controller
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "Invalid params"
+                    "validation" => $validator->errors()
                 ]
             ];
             return response()->json($responce, 400);
@@ -219,14 +219,14 @@ class PlantsController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:6144',
         ]);
 
         if($validator->fails()){
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "Invalid params"
+                    "validation" => $validator->errors()
                 ]
             ];
             return response()->json($responce, 400);
