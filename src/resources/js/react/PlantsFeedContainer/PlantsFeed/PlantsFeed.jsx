@@ -1,8 +1,9 @@
 import s from "./PlantsFeed.module.css";
 import { NavLink } from "react-router-dom";
-import {plantEditingPath} from "../../Settings/Path";
+import {plantEditingPath, plantViewPath} from "../../Settings/Path";
 import NotificationContainer from "../../NotificationContainer/NotificationContainer";
 import Loading from "../../Loading/Loading";
+import LastWateringComponent from "../../LastWaterComponent/LastWaterComponent";
 
 let PlantsFeed = ({plants = [], wateringClick}) => {
 
@@ -17,40 +18,7 @@ let PlantsFeed = ({plants = [], wateringClick}) => {
             if(plant.id == 0){
             return <Loading/>
             }
-            let watering_elemnt;
-            if(plant.care.last_waterings.length < 1 || plant.care.last_waterings == undefined){
-                watering_elemnt = <div className="alert alert-danger">
-                    Plant never watered!
-                </div>;
-            }
-            else{
-
-                plant.care.last_waterings.sort(
-                    (a,b) => {
-                        return a.date < b.date
-                    }
-                );
-
-                let date = new Date(plant.care.last_waterings[0].date)
-
-                let dateFormatted;
-
-                let todayStart = new Date();
-                todayStart.setHours(0,0);
-
-                if(date < todayStart){
-                    dateFormatted = date.toLocaleDateString()
-                }
-                else{
-                    dateFormatted = date.toLocaleTimeString()
-                }
-
-
-                watering_elemnt = 
-                    <div className="alert alert-info">
-                        Last water: {dateFormatted}
-                    </div>;
-            }
+            
 
             return <div className="card my-3 p-3">
                     <div className="row">
@@ -68,10 +36,11 @@ let PlantsFeed = ({plants = [], wateringClick}) => {
                                 <div className="p-2">
                                     Water {plant.care.week_watering_times} times a week
                                 </div>
-                                {watering_elemnt}
+                                <LastWateringComponent watering={plant.care.last_waterings} />
                                 <div className="p-2">
                                     <div className="btn btn-primary m-1" data-plant-id={plant.id} onClick={wateringClick}>Mark watered</div> 
-                                    <NavLink to={plantEditingPath + plant.id} className="btn btn-secondary  m-1">Edit plant</NavLink>
+                                    <NavLink to={plantEditingPath[0] + plant.id + plantEditingPath[1]} className="btn btn-secondary  m-1">Edit plant</NavLink>
+                                    <NavLink to={plantViewPath + plant.id} className="btn btn-info  m-1">Plant info</NavLink>
                                 </div>
                             </div>
                         </div>
