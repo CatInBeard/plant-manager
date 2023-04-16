@@ -2,8 +2,8 @@
 import StoreContext from "../Store/StoreContext";
 import NotificationContainer from "../NotificationContainer/NotificationContainer"
 import PlantAdd from "./PlantAdd/PlantAdd";
-import { useContext} from "react";
-import { NavLink } from 'react-router-dom';
+import { useContext,useEffect} from "react";
+import { NavLink,useNavigate } from 'react-router-dom';
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import { basepath } from "../Settings/Path";
@@ -14,7 +14,18 @@ let PlantAddContainer = () => {
     let store = useContext(StoreContext)
     let state = store.getState();
 
-    
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        if(state.addPlant.redirectID){
+            setTimeout(() => {
+                setTimeout(store.dispatch({type: "AddPlant_setRedirect", newID: 0}))
+              }, "3000");
+            return navigate(basepath + "/plant/" + state.addPlant.redirectID);
+        }
+    })
+
+
     let updateName = (e) =>{
         let value = e.target.value
         store.dispatch({type: "AddPlant_updatePlantName", newValue: value});
@@ -37,8 +48,9 @@ let PlantAddContainer = () => {
 
             store.dispatch({type: "AddPlant_Notify", notificationText:"Creating...", notificationType:"info"});
 
+            let responce_data;
             try{
-                await addPlant(
+                responce_data = await addPlant(
                 {
                     name: state.addPlant.name,
                     description: state.addPlant.description,
@@ -50,7 +62,9 @@ let PlantAddContainer = () => {
                 return;
             }
 
-            store.dispatch({type: "AddPlant_Submit"});
+            store.dispatch({type: "AddPlant_Submit", plant:{...responce_data.data.plant}});
+
+
         }
 
         fn();

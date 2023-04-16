@@ -15,19 +15,19 @@ return <div className="card my-3 p-3">
                         <label for="plant_name">
                             Plant name:
                         </label>
-                        <input placeholder="Plant name" onChange={updateName} className="form-control" id="plant_name" name="plant_name" type="text" value={plant.name}/>
+                        <input placeholder="Plant name" required onChange={updateName} className="form-control" id="plant_name" name="plant_name" type="text" value={plant.name}/>
                     </div>
                     <div className="p-2 form-group">
                         <label for="plant_description">
                             Description:
                         </label>
-                        <textarea  placeholder="Plant description" onChange={updateDescription} className="form-control" id="plant_description" name="plant_description">{plant.description}</textarea>
+                        <textarea  placeholder="Plant description" required onChange={updateDescription} className="form-control" id="plant_description" name="plant_description">{plant.description}</textarea>
                     </div>
                     <div onChange={updateWatering} className="p-2 form-group">
                         <label for="week_watering_times">
                             Waterings per week:
                         </label>
-                        <input className="form-control" id="week_watering_times" name="week_watering_times" type="number" min="0" value={plant.care.week_watering_times}/>
+                        <input className="form-control" required id="week_watering_times" name="week_watering_times" type="number" min="0" value={plant.care.week_watering_times}/>
                     </div>
                     <div className="p-2 form-group">
                         <input type="submit" className="btn btn-primary" value="Add"/>
