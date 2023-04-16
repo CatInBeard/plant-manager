@@ -50,14 +50,10 @@ class PlantsController extends Controller
 
         $plant = Plant::create($validated);
 
-        $plant_array = $plant->toArray();
-
-        $plant_array['photo'] = $plant_array['photo'] == true ? $plant_array['photo'] : $this->NoImage;
-
         $responce = [
             "status" => "created",
             "data" => [
-                "plant" => $plant_array
+                "plant" => $this->formatPlant($plant)
             ]
         ];
         return response()->json($responce, 201);
@@ -104,15 +100,10 @@ class PlantsController extends Controller
         $plant->update($validated);
 
 
-
-        $plant_array = $plant->toArray();
-        $plant_array['photo'] = $plant_array['photo'] == true ? $plant_array['photo'] : $this->NoImage;
-
-
         $responce = [
             "status" => "updated",
             "data" => [
-                "plant" => $plant_array
+                "plant" => $this->formatPlant($plant)
             ]
         ];
 
@@ -137,13 +128,10 @@ class PlantsController extends Controller
             return response()->json($responce, 404);
         }
 
-        $plant_array = $plant->toArray();
-        $plant_array['photo'] = $plant_array['photo'] == true ? $plant_array['photo'] : $this->NoImage;
-
         $responce = [
             "status" => "found",
             "data" => [
-                "plant" => $plant_array
+                "plant" => $this->formatPlant($plant)
             ]
         ];
 
@@ -245,12 +233,12 @@ class PlantsController extends Controller
         }
 
         $path = $request->file('image')->store('public/images');
-        $plant->update([ "photo" => $file->hashName() ]);
+        $plant->update([ "photo" => $request->file('image')->hashName() ]);
 
         $responce = [
             "status" => "created",
             "data" => [
-                "plant" => $plant->toArray()
+                "plant" => $this->formatPlant($plant)
             ]
         ];
         return response()->json($responce, 200);
@@ -287,7 +275,6 @@ class PlantsController extends Controller
         $format = function($plant){
             return $this->formatWatering($plant);
         };
-
         return $waterings->map($format);
     }
 

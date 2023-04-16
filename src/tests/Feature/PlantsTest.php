@@ -51,7 +51,9 @@ class PlantsTest extends TestCase
                 "plant" => [
                     "name" => "name",
                     "description" => "description",
-                    "watering_per_week"=>1
+                    "care" => [
+                        "week_watering_times" => 1
+                    ]
                 ]
             ]
         ]);
@@ -84,7 +86,9 @@ class PlantsTest extends TestCase
                     "id" => $plantID,
                     "name" => "Edited Plant",
                     "description" => "description",
-                    "watering_per_week"=>2
+                    "care" => [
+                        "week_watering_times" => 2
+                    ]
                 ]
             ]
         ]);
@@ -133,7 +137,9 @@ class PlantsTest extends TestCase
                     "id" => $plantID,
                     "name" => "PLANT",
                     "description" => "description",
-                    "watering_per_week"=>2
+                    "care" => [
+                        "week_watering_times" => 2
+                    ]
                 ]
             ]
         ]);
