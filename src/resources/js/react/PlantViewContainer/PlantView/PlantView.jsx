@@ -31,7 +31,7 @@ return <div className="card my-3 p-3">
                             Waterings per week: {plant.care.week_watering_times}
                     </div>
                     <div>
-                        <LastWateringComponent waterings={plant.care.last_waterings} />
+                        <LastWateringComponent plant={plant} />
                     </div>
                     <div className="p-2">
                         <div className="btn btn-primary m-1" data-plant-id={plant.id} onClick={wateringClick}>Mark watered</div> 

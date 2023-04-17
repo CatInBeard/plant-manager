@@ -35,7 +35,6 @@ let PlantViewContainer = () => {
     if(!findedPlant){
         let fn = async () => {
             try{
-                console.log("1");
                 var result = await getPlants("Saint-Petersburg")
             }
             catch{
