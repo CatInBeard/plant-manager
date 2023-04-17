@@ -1,6 +1,7 @@
 const ViewPlantState = {
     notificationType: "",
-    notificationText: ""
+    notificationText: "",
+    notFoundID: 0
 };
 
 export default ViewPlantState

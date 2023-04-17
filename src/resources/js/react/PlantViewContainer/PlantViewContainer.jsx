@@ -8,8 +8,59 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import { basepath } from "../Settings/Path";
 import wateringPlant from "../API/wateringPlant";
+import Loading from "../Loading/Loading";
+import getPlants from "../API/getPlants"
+import NotFound from "../NotFound/NotFound";
 
 let PlantViewContainer = () => {
+    
+    let store = useContext(StoreContext)
+    let state = store.getState();
+
+    const { id } = useParams();
+
+
+    if(id == state.viewPlant.notFoundID){
+        return <NotFound/>
+    }
+
+    let plants = state.plants.plants;
+
+    const findedPlant = plants.find(
+        (element) => element.id == id
+    );
+
+    let plant;
+
+    if(!findedPlant){
+        let fn = async () => {
+            try{
+                console.log("1");
+                var result = await getPlants("Saint-Petersburg")
+            }
+            catch{
+                console.error("Can't access API")
+                return;
+            }
+
+            const findedPlant = result.data.plants.find(
+                (element) => element.id == id
+            );
+
+            if(!findedPlant){
+                return store.dispatch({type: "ViewPlant_setNotfound", ID:id });
+            }
+
+            store.dispatch({type: "updatePlants", plants : [...result.data.plants] })
+        }
+
+        fn();
+
+        return <Loading/>
+    }
+    else{
+        plant = {...findedPlant};
+    }
 
     let wateringClick = (e) => {
 
@@ -27,26 +78,6 @@ let PlantViewContainer = () => {
         }
 
         fn();
-    }
-    
-    let store = useContext(StoreContext)
-    let state = store.getState();
-
-    const { id } = useParams();
-
-    let plants = state.plants.plants;
-
-    const findedPlant = plants.find(
-        (element) => element.id == id
-    );
-
-    let plant;
-
-    if(!findedPlant){
-
-    }
-    else{
-        plant = {...findedPlant};
     }
 
     return <>

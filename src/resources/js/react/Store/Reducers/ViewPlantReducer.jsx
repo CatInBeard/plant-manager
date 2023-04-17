@@ -1,13 +1,16 @@
 import { NavLink } from "react-router-dom";
 import ViewPlantState from "./InitialStates/ViewPlantState"
 
-let EditPlantReducer = (state = ViewPlantState, action) => {
+let ViewPlantReducer = (state = ViewPlantState, action) => {
     
     switch(action.type){
-        
+
+        case "ViewPlant_setNotfound":
+            state.notFoundID = action.ID
+        break;
 
     }
     return state;
 }
 
-export default EditPlantReducer
+export default ViewPlantReducer
