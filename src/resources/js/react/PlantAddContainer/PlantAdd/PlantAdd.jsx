@@ -27,7 +27,7 @@ return <div className="card my-3 p-3">
                         <label for="week_watering_times">
                             Waterings per week:
                         </label>
-                        <input className="form-control" required id="week_watering_times" name="week_watering_times" type="number" min="0" value={plant.care.week_watering_times}/>
+                        <input className="form-control" required id="week_watering_times" name="week_watering_times" type="number" min="0" max="14" step="0.1" value={plant.care.week_watering_times}/>
                     </div>
                     <div className="p-2 form-group">
                         <input type="submit" className="btn btn-primary" value="Add"/>
