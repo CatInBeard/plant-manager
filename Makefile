@@ -19,12 +19,12 @@ build-frontend:
 	docker build -t npmbuilder docker/npm
 	docker run -v $(ROOT_DIR)/src:/usr/src/app npmbuilder
 setup-laravel: 
-	docker run -v $PWD/src:/app -w /app php:8.1-fpm php artisan storage:link
-	docker run -v $PWD/src:/app -w /app php:8.1-fpm php artisan key:generate
-	docker run -v $PWD/src:/app -w /app php:8.1-fpm chmod 666 -R storage
-	docker run -v $PWD/src:/app -w /app php:8.1-fpm chmod 666 -R .env
+	docker run -v $(ROOT_DIR)/src:/app -w /app php:8.1-fpm php artisan storage:link
+	docker run -v $(ROOT_DIR)/src:/app -w /app php:8.1-fpm php artisan key:generate
+	docker run -v $(ROOT_DIR)/src:/app -w /app php:8.1-fpm chmod 666 -R storage
+	docker run -v $(ROOT_DIR)/src:/app -w /app php:8.1-fpm chmod 666 -R .env
 db-migrate:
 	docker build -t phpfpm docker/php-fpm
-	docker run --network plant-manager_backend -v $PWD/src:/app -w /app phpfpm php artisan migrate
+	docker run --network plant-manager_backend -v $(ROOT_DIR)/src:/app -w /app phpfpm php artisan migrate
 
 restart: build stop start-only
