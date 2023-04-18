@@ -1,8 +1,9 @@
 import PopupContainer from "../PopupContainer/PopupContainer";
+import s from "./ConfirmDialog.module.css"
 
 let ConfirmDialog = ({children, actionButtonText="Ok", actionButtonType="primary",cancelAction,primaryAction, headerText="Confirm"}) => {
     return <PopupContainer>
-            <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className={"toast show " + s.confirm} role="alert" aria-live="assertive" aria-atomic="true">
                 <div className="toast-header">
                     <strong className="me-auto">{headerText}</strong>
                     <button type="button" class="btn-close" aria-label="Close" onClick={cancelAction}></button>
