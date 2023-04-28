@@ -19,9 +19,18 @@
                         </h1>
                     </div>
                     <div class="col justify-content-end d-flex">
+                        @guest
+                            <div>
+                                <a href="{{ route('auth.show') }}" class="btn btn-primary">Sign in</a>
+                                <a href="{{ route('reg.show') }}" class="btn btn-success">Sign up</a>
+                            </div>
+                        @endguest
+
+                        @auth
                         <div>
-                            <a href="{{ route('app') }}" class="btn btn-primary">Log in</a>
+                            <a href="{{ route('app') }}" class="btn btn-primary">App</a>
                         </div>
+                        @endauth
                     </div>
                 </div>
             </header>
