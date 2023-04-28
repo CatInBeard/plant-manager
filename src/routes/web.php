@@ -17,9 +17,9 @@ use App\Http\Controllers\LoginController;
 */
 
 
-Route::view('/', 'welcome')->name("welcome");
-
 Route::middleware('guest')->group(function () {
+
+Route::view('/', 'welcome')->name("welcome");    
 
 Route::view("/signup","signup")->name("reg.show");
 
