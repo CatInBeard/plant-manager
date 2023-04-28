@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LoginController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,8 +16,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::view('/', 'welcome')->name("welcome");
+
+Route::middleware('guest')->group(function () {
+
+Route::view("/signup","signup")->name("reg.show");
+
+Route::post("/signup", [RegisterController::class, 'register'])->name("reg.post");
+
+Route::view("/signin","signin")->name("auth.show");
+
+Route::post("/signin", [LoginController::class, 'login'])->name("auth.post");
+
+});
+
+Route::middleware('auth')->group(function () {
 
 Route::view('/app', 'app')->name("app");
 
 Route::view('/app/{any}', 'app')->where('any', '.*');
+
+});
