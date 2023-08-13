@@ -44,6 +44,7 @@ services:
     restart: always
     volumes:
     - ./docker/redis/data:/var/lib/redis
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
     env_file:
     - ./docker/redis/.env
     networks:
