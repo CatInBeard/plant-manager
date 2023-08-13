@@ -4,7 +4,7 @@ import Main from "../Main/Main";
 import StoreContext from "../Store/StoreContext";
 import PlantsFeedContainer from "../PlantsFeedContainer/PlantsFeedContainer";
 import { NavLink } from 'react-router-dom';
-import { plantAddPath } from "../Settings/Path";
+import { plantAddPath, profilePath } from "../Settings/Path";
 
 let Index = () => {
 
@@ -15,8 +15,8 @@ let Index = () => {
         <Header>
             <div className="container">
                 <div className="row">
-                    <div className="col">
-
+                    <div className="col col justify-content-start d-flex">
+                        <NavLink to={profilePath} className="btn btn-lg btn-outline-secondary mb-2">Profile</NavLink>
                     </div>
                     <div className="col">
                     <h1>Plant manager</h1>
