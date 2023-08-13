@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,8 @@ Route::post("/signin", [LoginController::class, 'login'])->name("auth.post");
 });
 
 Route::middleware('auth')->group(function () {
+
+Route::get("/logout", [LogoutController::class, 'logout'])->name("plants");
 
 Route::view('/app', 'app')->name("app");
 
