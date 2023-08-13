@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Plant;
+use App\Models\User;
 use App\Models\Watering;
+use Illuminate\Support\Facades\Auth;
 
 class PlantsController extends Controller
 {
 
     protected $NoImage = "/images/no_photo.png";
 
-    public function get()
+    public function get(Request $request)
     {
 
-        $plants = Plant::all();
+        $plants = $request->user()->plants()->orderBy("created_at","DESC")->get();
 
         $formatted_plants = $this->formatPlants($plants);
         $responce = [
@@ -50,12 +52,16 @@ class PlantsController extends Controller
 
         $plant = Plant::create($validated);
 
+        $plant->user_id = Auth::user()->id;
+        $plant->save();;
+
         $responce = [
             "status" => "created",
             "data" => [
                 "plant" => $this->formatPlant($plant)
             ]
         ];
+        
         return response()->json($responce, 201);
     }
 
@@ -64,7 +70,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = Plant::find($plantID);
+        $plant = $plants = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -115,7 +121,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = Plant::find($plantID);
+        $plant = $plants = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -143,7 +149,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = Plant::find($plantID);
+        $plant = $plants = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -170,7 +176,7 @@ class PlantsController extends Controller
     public function addWatering(Request $request){
         $plantID = $request->route('id');
 
-        $plant = Plant::find($plantID);
+        $plants = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -205,7 +211,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = Plant::find($plantID);
+        $plant = $plants = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [

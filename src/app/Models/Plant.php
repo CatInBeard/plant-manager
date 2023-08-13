@@ -13,7 +13,8 @@ class Plant extends Model
         'name',
         'photo',
         'description',
-        'watering_per_week'
+        'watering_per_week',
+        'user_id',
     ];
 
     protected $attributes = array(
@@ -25,5 +26,10 @@ class Plant extends Model
 
     public function Waterings(){
         return $this->hasMany(Watering::class);
+    }
+
+    public function User()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
