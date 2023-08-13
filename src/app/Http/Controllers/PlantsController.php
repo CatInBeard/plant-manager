@@ -70,7 +70,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = $plants = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -121,7 +121,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = $plants = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -149,7 +149,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = $plants = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -176,7 +176,7 @@ class PlantsController extends Controller
     public function addWatering(Request $request){
         $plantID = $request->route('id');
 
-        $plants = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
@@ -211,7 +211,7 @@ class PlantsController extends Controller
 
         $plantID = $request->route('id');
 
-        $plant = $plants = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($plantID);
 
         if($plant == null){
             $responce = [
