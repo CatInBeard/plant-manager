@@ -8,6 +8,9 @@ use App\Models\Plant;
 use App\Models\User;
 use App\Models\Watering;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PlantStoreRequest;
+use App\Http\Requests\PlantUpdateRequest;
+
 
 class PlantsController extends Controller
 {
@@ -29,26 +32,10 @@ class PlantsController extends Controller
         return response()->json($responce, 200);
     }
 
-    public function store(Request $request)
+    public function store(PlantStoreRequest $request)
     {
 
-        $validator = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'description' => 'required',
-                'watering_per_week' => 'required'
-        ]);
-
-        if($validator->fails()){
-            $responce = [
-                "status" => "error",
-                "error" => [
-                    "validation" => $validator->errors()
-                ]
-            ];
-            return response()->json($responce, 400);
-        }
-        
-        $validated = $validator->validated();
+        $validated = $request->validated();
 
         $plant = Plant::create($validated);
 
@@ -65,7 +52,7 @@ class PlantsController extends Controller
         return response()->json($responce, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(PlantUpdateRequest $request, $id)
     {
 
         $plant = $request->user()->plants()->find($id);
@@ -80,25 +67,8 @@ class PlantsController extends Controller
 
             return response()->json($responce, 404);
         }
-
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'max:255',
-            'description' => '',
-            'watering_per_week' => ''
-        ]);
-
-        if($validator->fails()){
-            $responce = [
-                "status" => "error",
-                "error" => [
-                    "validation" => $validator->errors()
-                ]
-            ];
-            return response()->json($responce, 400);
-        }
         
-        $validated = $validator->validated();
+        $validated = $request->validated();
 
 
         $plant->update($validated);
