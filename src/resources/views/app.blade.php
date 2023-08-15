@@ -9,6 +9,6 @@
     @vite('resources/js/app.js')
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">Please, enable javascript</div>
 </body>
 </html>
