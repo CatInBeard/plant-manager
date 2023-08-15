@@ -15,17 +15,20 @@ use App\Http\Controllers\PlantsController;
 |
 */
 
+Route::prefix('v1')->group(function () {
 
-Route::middleware('auth.api')->group(
-    function () {
+    Route::middleware('auth.api')->group(
+        function () {
 
-        Route::name('api.')->group(function () {
-           
-            Route::apiResource('/plants', PlantsController::class);
+            Route::name('api.')->group(function () {
+            
+                Route::apiResource('/plants', PlantsController::class);
 
-        });
+            });
 
-        Route::post("/plants/{id}/watering", [PlantsController::class, 'addWatering'])->name("api.plants.addWatering");
-        Route::post("/plants/{id}/photo", [PlantsController::class, 'addPhoto'])->name("api.plants.addPhoto");
-    }
-);
+            Route::post("/plants/{id}/watering", [PlantsController::class, 'addWatering'])->name("api.plants.addWatering");
+            Route::post("/plants/{id}/photo", [PlantsController::class, 'addPhoto'])->name("api.plants.addPhoto");
+        }
+    );
+
+});
