@@ -19,15 +19,13 @@ use App\Http\Controllers\PlantsController;
 Route::middleware('auth.api')->group(
     function () {
 
-        Route::get('/user', function (Request $request) {
-            return $request->user();
+        Route::name('api.')->group(function () {
+           
+            Route::apiResource('/plants', PlantsController::class);
+
         });
-        Route::get("/plants", [PlantsController::class, 'get'])->name("plants");
-        Route::post("/plants", [PlantsController::class, 'create'])->name("plants.create");
-        Route::patch("/plants/{id}", [PlantsController::class, 'updateOne'])->name("plants.updateOne");
-        Route::get("/plants/{id}", [PlantsController::class, 'getOne'])->name("plants.getOne");
-        Route::delete("/plants/{id}", [PlantsController::class, 'deleteOne'])->name("plants.deleteOne");
-        Route::post("/plants/{id}/watering", [PlantsController::class, 'addWatering'])->name("plants.addWatering");
-        Route::post("/plants/{id}/photo", [PlantsController::class, 'addPhoto'])->name("plants.addPhoto");
+
+        Route::post("/plants/{id}/watering", [PlantsController::class, 'addWatering'])->name("api.plants.addWatering");
+        Route::post("/plants/{id}/photo", [PlantsController::class, 'addPhoto'])->name("api.plants.addPhoto");
     }
 );

@@ -14,7 +14,7 @@ class PlantsController extends Controller
 
     protected $NoImage = "/images/no_photo.png";
 
-    public function get(Request $request)
+    public function index(Request $request)
     {
 
         $plants = $request->user()->plants()->orderBy("created_at","DESC")->get();
@@ -29,7 +29,7 @@ class PlantsController extends Controller
         return response()->json($responce, 200);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -65,18 +65,16 @@ class PlantsController extends Controller
         return response()->json($responce, 201);
     }
 
-    public function updateOne(Request $request)
+    public function update(Request $request, $id)
     {
 
-        $plantID = $request->route('id');
-
-        $plant = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($id);
 
         if($plant == null){
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "ID " . $plantID . " not found"
+                    "text" => "ID " . $id . " not found"
                 ]
             ];
 
@@ -116,18 +114,16 @@ class PlantsController extends Controller
         return response()->json($responce, 200);
     }
 
-    public function getOne(Request $request)
+    public function show(Request $request, $id)
     {
 
-        $plantID = $request->route('id');
-
-        $plant = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($id);
 
         if($plant == null){
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "ID " . $plantID . " not found"
+                    "text" => "ID " . $id . " not found"
                 ]
             ];
 
@@ -144,18 +140,16 @@ class PlantsController extends Controller
         return response()->json($responce, 200);
     }
 
-    public function deleteOne(Request $request)
+    public function destroy(Request $request, $id)
     {
 
-        $plantID = $request->route('id');
-
-        $plant = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($id);
 
         if($plant == null){
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "ID " . $plantID . " not found"
+                    "text" => "ID " . $id . " not found"
                 ]
             ];
 
@@ -173,16 +167,15 @@ class PlantsController extends Controller
         return response()->json($responce, 200);
     }
 
-    public function addWatering(Request $request){
-        $plantID = $request->route('id');
+    public function addWatering(Request $request, $id){
 
-        $plant = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($id);
 
         if($plant == null){
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "ID " . $plantID . " not found"
+                    "text" => "ID " . $id . " not found"
                 ]
             ];
 
@@ -206,18 +199,17 @@ class PlantsController extends Controller
         return response()->json($responce, 201);
     }
 
-    public function addPhoto(Request $request)
+    public function addPhoto(Request $request, $id)
     {
 
-        $plantID = $request->route('id');
 
-        $plant = $request->user()->plants()->find($plantID);
+        $plant = $request->user()->plants()->find($id);
 
         if($plant == null){
             $responce = [
                 "status" => "error",
                 "error" => [
-                    "text" => "ID " . $plantID . " not found"
+                    "text" => "ID " . $id . " not found"
                 ]
             ];
 
