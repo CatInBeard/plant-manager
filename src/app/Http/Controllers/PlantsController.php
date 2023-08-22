@@ -55,18 +55,10 @@ class PlantsController extends Controller
     public function update(PlantUpdateRequest $request, $id)
     {
 
-        $plant = $request->user()->plants()->find($id);
+        $plant = Plant::find($id);
 
-        if($plant == null){
-            $responce = [
-                "status" => "error",
-                "error" => [
-                    "text" => "ID " . $id . " not found"
-                ]
-            ];
-
-            return response()->json($responce, 404);
-        }
+        if ($request->user()->cannot('update', $plant))
+            return $this->returnErrorNotFound("Plant");
         
         $validated = $request->validated();
 
@@ -87,18 +79,9 @@ class PlantsController extends Controller
     public function show(Request $request, $id)
     {
 
-        $plant = $request->user()->plants()->find($id);
-
-        if($plant == null){
-            $responce = [
-                "status" => "error",
-                "error" => [
-                    "text" => "ID " . $id . " not found"
-                ]
-            ];
-
-            return response()->json($responce, 404);
-        }
+        $plant = Plant::find($id);
+        if ($request->user()->cannot('view', $plant))
+            return $this->returnErrorNotFound("Plant");
 
         $responce = [
             "status" => "found",
@@ -113,18 +96,10 @@ class PlantsController extends Controller
     public function destroy(Request $request, $id)
     {
 
-        $plant = $request->user()->plants()->find($id);
+        $plant = Plant::find($id);
 
-        if($plant == null){
-            $responce = [
-                "status" => "error",
-                "error" => [
-                    "text" => "ID " . $id . " not found"
-                ]
-            ];
-
-            return response()->json($responce, 404);
-        }
+        if ($request->user()->cannot('destroy', $plant))
+            return $this->returnErrorNotFound("Plant");
 
         $plant->delete();
 
@@ -139,18 +114,9 @@ class PlantsController extends Controller
 
     public function addWatering(Request $request, $id){
 
-        $plant = $request->user()->plants()->find($id);
-
-        if($plant == null){
-            $responce = [
-                "status" => "error",
-                "error" => [
-                    "text" => "ID " . $id . " not found"
-                ]
-            ];
-
-            return response()->json($responce, 404);
-        }
+        $plant = Plant::find($id);
+        if ($request->user()->cannot('water', $plant))
+            return $this->returnErrorNotFound("Plant");
 
         $watering = Watering::create(
             [
@@ -172,19 +138,9 @@ class PlantsController extends Controller
     public function addPhoto(Request $request, $id)
     {
 
-
-        $plant = $request->user()->plants()->find($id);
-
-        if($plant == null){
-            $responce = [
-                "status" => "error",
-                "error" => [
-                    "text" => "ID " . $id . " not found"
-                ]
-            ];
-
-            return response()->json($responce, 404);
-        }
+        $plant = Plant::find($id);
+        if ($request->user()->cannot('addPhoto', $plant))
+            return $this->returnErrorNotFound("Plant");
 
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg|max:6144',
@@ -252,4 +208,19 @@ class PlantsController extends Controller
             "date" => $watering->created_at,
         ];
     }
+
+    protected function returnError($errors, $code){
+        $responce = [
+            "status" => "error",
+            "error" => [
+                "text" => $errors
+            ]
+        ];
+
+        return response()->json($responce, $code);
+    }
+    protected function returnErrorNotFound($entityName){
+        return $this->returnError($entityName . " not found", 404);
+    }
+
 }
